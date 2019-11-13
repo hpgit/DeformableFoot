@@ -9,10 +9,11 @@ class BJoint
 {
 public:
 	// methods
-	BJoint();
-	~BJoint(); 
-	Eigen::Isometry3d GetJointBeforeTransform();
-	Eigen::Isometry3d GetJointAfterTransform();
+	BJoint(Body *_body_p, Eigen::Affine3d &transform_p, Body *_body_c, Eigen::Affine3d &transform_c);
+	
+	Eigen::Affine3d GetJointBeforeTransform();
+	Eigen::Affine3d GetJointAfterTransform();
+	Eigen::Affine3d GetJointTransform();
 
 public:
 	int idx;
@@ -22,8 +23,8 @@ public:
 	Body* body_p;
 	Body* body_c;
 
-	Eigen::Isometry3d T_p;
-	Eigen::Isometry3d T_c;
+	Eigen::Affine3d T_p;
+	Eigen::Affine3d T_c;
 	
 };
 

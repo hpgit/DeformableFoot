@@ -3,45 +3,50 @@
 
 
 #include <vector>
-#include <pair>
+#include <map>
+//#include <pair>
 #include <Eigen/Dense>
-#include "Body.hpp"
-#include "BJoint.hpp"
+#include "Body.h"
+#include "BJoint.h"
+
+using Eigen::Ref;
 
 class RigidWorld {
 public:
 	// methods
-	RigidWorld(double h);
-    ~RigidWorld();
+	explicit RigidWorld(double h=1./300.);
+	~RigidWorld();
 
-	int GetNumBody();
+	int GetNumBody() { return this->bodies.size(); }
     int GetConstraintNum();
     
     void AddBody(Body* _body);
     void AddJoint(BJoint* _joint);
     
-    Body* GetBody(int body_idx);
-    BJoint* GetJoint(int joint_idx);
+    Body* GetBody(int body_idx) { return this->bodies[body_idx]; }
+    BJoint* GetJoint(int joint_idx) { return this->joints[joint_idx]; }
+    Body* GetBodyByName(const std::string &body_name) { return this->bodies[this->name_to_idx[body_name]];}
 
-    void SetGravity(Eigen::Vector3d& _gravity);
+    void SetGravity(const Ref<const Eigen::Vector3d>& _gravity) { gravity = _gravity; }
 
     Eigen::MatrixXd GetJointJacobian(int joint_idx);
     Eigen::MatrixXd GetJointJacobianRemain(int joint_idx);
-    std::pair<Eigen::MatrixXd, Eigen::MatrixXd> GetSystemMatrix();
+    void GetSystemMatrix(Ref<Eigen::MatrixXd> Aout, Ref<Eigen::VectorXd> bout);
 
-    void IntegratePosition(Eigen::Vector3d& vel);
-    void step();
+    void IntegratePosition(const Ref<const Eigen::VectorXd> &vel);
+    void Step();
 
     double GetKineticEnergy();
     double GetPotentialEnergy();
 
-    void draw();
+    void Draw();
 
 public:
 	// class variables
 	double h;
-    std::vector<Body> bodies;
-    std::vector<BJoint> joints;
+    std::vector<Body *> bodies;
+    std::vector<BJoint *> joints;
+    std::map<std::string, int> name_to_idx;
     Eigen::Vector3d gravity;
 };
 

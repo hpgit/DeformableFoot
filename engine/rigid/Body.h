@@ -8,35 +8,36 @@ class Body
 {
 public:
 	// methods
-	Body();
-	~Body();
+	Body(const char* name, Eigen::Affine3d &init_transform, double mass=1.);
 
-	Eigen::Isometry3d Transform();
-	Eigen::Rotate3d Rotation();
-	Eigen::Vector3d Translation();
+	Eigen::Affine3d Transform() { return this->T_g; }
+	Eigen::Matrix3d Rotation() { return this->T_g.linear(); }
+	Eigen::Vector3d Translation() { return this->T_g.translation(); }
 	
-	Eigen::Vector6d BodyVelGlobal();
+	Eigen::VectorXd BodyVelGlobal() { return this->v_g; }
 
-	void SetMass(double _m);
-	Eigen::MatrixXd GetMassMatrix();
+	void SetMass(double mass);
+	Eigen::MatrixXd GetMassMatrix() { return this->M_b; }
 	Eigen::MatrixXd GetMassMatrixGlobalCom();
 
-	Eigen::Vector3d ToWorld(Eigen::Vector3d& local_offset);
+	Eigen::Vector3d ToWorld(const Eigen::Vector3d& local_offset=Eigen::Vector3d::Zero());
 
-	Eigen::MatrixXd GetLinearJacobian(Eigen::Vector3d& local_offset);
+	Eigen::MatrixXd GetLinearJacobian(const Eigen::Vector3d& local_offset=Eigen::Vector3d::Zero());
 
 	double GetKineticEnergy();
-	double GetPotentialEnergy(Eigen::Vector3d& _g);
+	double GetPotentialEnergy(const Eigen::Vector3d& _g);
 
-	void SetBoxSize(Eigen::Vector3d& _size);
+	void SetBoxSize(const Eigen::Vector3d& _size);
 
 public:
 	// class variables
 	int idx;
 	std::string name;
-	Eigen::Isometry3d T_g;
+	double mass;
 	Eigen::MatrixXd M_b;
-	Eigen::Vector6d v_g;
+
+	Eigen::Affine3d T_g;
+	Eigen::VectorXd v_g;
 
 	Eigen::Vector3d box_size;
 
