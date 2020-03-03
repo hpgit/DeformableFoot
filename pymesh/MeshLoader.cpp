@@ -102,7 +102,7 @@ namespace PyMesh {
         for (size_t i = 0; i < this->m_faces_num; i++) {
             for (int j = 0; j < 5; j++) {
                 fin >> data;
-                if (j > 0) this->m_faces[3*i + j-1] = data;
+                if (j > 0 && j < 4) this->m_faces[3*i + j-1] = data;
             }
         }
         fin.close();

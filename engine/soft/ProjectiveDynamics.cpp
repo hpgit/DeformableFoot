@@ -187,24 +187,25 @@ void ProjectiveDynamics::draw() {
     for(Eigen::Index i=0; i < this->faces.rows(); i += 3) {
         Eigen::Vector3i face = this->faces.segment<3>(i);
 
-        glBegin(GL_TRIANGLES);
-        glColor3f(1., 0., 0.);
-        glVertex3f(this->x(3 * face[0]), this->x(3 * face[0] + 1), this->x(3 * face[0] + 2));
-        glColor3f(1., 0., 0.);
-        glVertex3f(this->x(3 * face[1]), this->x(3 * face[1] + 1), this->x(3 * face[1] + 2));
-        glColor3f(1., 0., 0.);
-        glVertex3f(this->x(3 * face[2]), this->x(3 * face[2] + 1), this->x(3 * face[2] + 2));
-        glEnd();
+            glBegin(GL_TRIANGLES);
+            glColor3f(1., 0., 0.);
+            glVertex3f(this->x(3 * face[0]), this->x(3 * face[0] + 1), this->x(3 * face[0] + 2));
+            glColor3f(1., 0., 0.);
+            glVertex3f(this->x(3 * face[1]), this->x(3 * face[1] + 1), this->x(3 * face[1] + 2));
+            glColor3f(1., 0., 0.);
+            glVertex3f(this->x(3 * face[2]), this->x(3 * face[2] + 1), this->x(3 * face[2] + 2));
+            glEnd();
 
-        glBegin(GL_LINE_LOOP);
-        glColor3f(0., 0., 0.);
-        glVertex3f(this->x(3 * face[0]), this->x(3 * face[0] + 1), this->x(3 * face[0] + 2));
-        glColor3f(0., 0., 0.);
-        glVertex3f(this->x(3 * face[1]), this->x(3 * face[1] + 1), this->x(3 * face[1] + 2));
-        glColor3f(0., 0., 0.);
-        glVertex3f(this->x(3 * face[2]), this->x(3 * face[2] + 1), this->x(3 * face[2] + 2));
-        glEnd();
-
+//        if (this->x(3*face[0]+1) > 1.95 && this->x(3*face[1]+1) > 1.95 && this->x(3*face[2]+1) > 1.95) {
+//            glBegin(GL_LINE_LOOP);
+//            glColor3f(0., 0., 0.);
+//            glVertex3f(this->x(3 * face[0]), this->x(3 * face[0] + 1), this->x(3 * face[0] + 2));
+//            glColor3f(0., 0., 0.);
+//            glVertex3f(this->x(3 * face[1]), this->x(3 * face[1] + 1), this->x(3 * face[1] + 2));
+//            glColor3f(0., 0., 0.);
+//            glVertex3f(this->x(3 * face[2]), this->x(3 * face[2] + 1), this->x(3 * face[2] + 2));
+//            glEnd();
+//        }
     }
     glPopMatrix();
 }

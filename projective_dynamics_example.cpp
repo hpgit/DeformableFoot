@@ -21,7 +21,7 @@
 
 #include "render/Camera.h"
 
-#include <flann/flann.hpp>
+//#include <flann/flann.hpp>
 
 
 ProjectiveDynamics *proj;

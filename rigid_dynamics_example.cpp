@@ -20,7 +20,7 @@
 
 #include "render/Camera.h"
 
-#include <flann/flann.hpp>
+//#include <flann/flann.hpp>
 
 
 RigidWorld world(1./30.);
@@ -171,9 +171,9 @@ void mouse_motion(int x, int y) {
 
 void timer(int value) {
     world.Step();
-    std::cout << world.GetKineticEnergy()<< std::endl;
-    std::cout << world.GetPotentialEnergy() << std::endl;
-    std::cout << world.GetKineticEnergy() + world.GetPotentialEnergy() << std::endl;
+//    std::cout << world.GetKineticEnergy()<< std::endl;
+//    std::cout << world.GetPotentialEnergy() << std::endl;
+//    std::cout << world.GetKineticEnergy() + world.GetPotentialEnergy() << std::endl;
 
     glutPostRedisplay();
     glutTimerFunc(33, timer, 0);
