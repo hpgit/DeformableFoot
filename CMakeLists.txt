@@ -24,8 +24,11 @@ include_directories(${OPENGL_INCLUDE_DIR})
 
 add_executable(pd_example projective_dynamics_example.cpp)
 add_executable(rigid_example rigid_dynamics_example.cpp)
+add_executable(mixed_example mixed_dynamics_example.cpp)
 
 #target_link_libraries(pd_example pymesh engine render ${OPENGL_gl_LIBRARY} ${GLUT_LIBRARY} ${FLANN_LIBRARIES})
 target_link_libraries(pd_example pymesh engine render ${OPENGL_gl_LIBRARY} ${GLUT_LIBRARY})
 #target_link_libraries(rigid_example pymesh engine render ${OPENGL_gl_LIBRARY} ${GLUT_LIBRARY} ${FLANN_LIBRARIES})
 target_link_libraries(rigid_example pymesh engine render ${OPENGL_gl_LIBRARY} ${GLUT_LIBRARY})
+
+target_link_libraries(mixed_example pymesh engine render ${OPENGL_gl_LIBRARY} ${GLUT_LIBRARY})

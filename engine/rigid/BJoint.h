@@ -25,7 +25,9 @@ public:
 
 	Eigen::Affine3d T_p;
 	Eigen::Affine3d T_c;
-	
+
+public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
 #endif  // _BJOINT_H_

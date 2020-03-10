@@ -177,10 +177,11 @@ void RigidWorld::Draw() {
         Body *body = this->bodies[i];
         glPushMatrix();
         glMultMatrixd(body->Transform().matrix().data());
-//        Eigen::AngleAxisd(body->Rotation()).axis();
+        // Eigen::AngleAxisd(body->Rotation()).axis();
         glScaled(body->box_size[0], body->box_size[1], body->box_size[2]);
         glColor3f(1., 0., 0.);
-        glutSolidCube(1.);
+        // glutSolidCube(1.);
+        glutWireCube(1.);
         glPopMatrix();
     }
 

@@ -41,7 +41,8 @@ public:
 
 	Eigen::Vector3d box_size;
 
-	
+public:
+	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
 #endif  // _BODY_H_
