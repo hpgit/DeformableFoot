@@ -21,7 +21,7 @@
 
 #include "render/Camera.h"
 
-//#include <flann/flann.hpp>
+#include <flann/flann.hpp>
 
 
 ProjectiveDynamics *proj;
@@ -119,40 +119,43 @@ void timer(int value) {
 }
 
 int main(int argc, char **argv) {
-//    PyMesh::MshLoader mshloader("../data/cube_.msh");
-    PyMesh::MeshLoader mshloader("../data/cube");
+
+//     PyMesh::MeshLoader mshloader("../data/cube");
+//     Eigen::VectorXd nodes = mshloader.get_nodes();
+//     Eigen::VectorXi elems = mshloader.get_elements();
+//     Eigen::VectorXi faces = mshloader.get_faces();
+
+// //    std::cout << nodes << std::endl;
+// //    std::cout << elems << std::endl;
+//     std::cout << faces << std::endl;
+
+   PyMesh::MshLoader mshloader("../data/cube_.msh");
+   PyMesh::ObjLoader objloader("../data/cube__sf.obj");
+
     Eigen::VectorXd nodes = mshloader.get_nodes();
     Eigen::VectorXi elems = mshloader.get_elements();
-    Eigen::VectorXi faces = mshloader.get_faces();
+    int nn = 1;
 
-//    std::cout << nodes << std::endl;
-//    std::cout << elems << std::endl;
-    std::cout << faces << std::endl;
+    flann::Matrix<double> dataset(nodes.data(), nodes.rows()/3, 3);
+    flann::Matrix<double> query(objloader.vertex.data(), objloader.vertex.size()/3, 3);
 
-//    PyMesh::ObjLoader objloader("../data/cube__sf.obj");
-//
-//    int nn = 1;
-//
-//    flann::Matrix<double> dataset(nodes.data(), nodes.rows()/3, 3);
-//    flann::Matrix<double> query(objloader.vertex.data(), objloader.vertex.size()/3, 3);
-//
-//    flann::Matrix<int> indices(new int[query.rows*nn], query.rows, nn);
-//    flann::Matrix<double> dists(new double[query.rows*nn], query.rows, nn);
-//
-//    // construct an randomized kd-tree index using 4 kd-trees
-//    flann::Index<flann::L2<double> > index(dataset, flann::KDTreeIndexParams(4));
-//    index.buildIndex();
-//
-//    // do a knn search, using 128 checks
-//    index.knnSearch(query, indices, dists, nn, flann::SearchParams(128));
-//
-//    for(int i=0; i<indices.rows; i++) {
-//        std::cout << *indices[i] << " " << *dists[i]<< std::endl;
-//    }
-//
-//    Eigen::VectorXi faces(objloader.faces.size());
-//    for(auto i=0; i < objloader.faces.size(); i++)
-//        faces(i) = *indices[objloader.faces[i]];
+    flann::Matrix<int> indices(new int[query.rows*nn], query.rows, nn);
+    flann::Matrix<double> dists(new double[query.rows*nn], query.rows, nn);
+
+    // construct an randomized kd-tree index using 4 kd-trees
+    flann::Index<flann::L2<double> > index(dataset, flann::KDTreeIndexParams(4));
+    index.buildIndex();
+
+    // do a knn search, using 128 checks
+    index.knnSearch(query, indices, dists, nn, flann::SearchParams(128));
+
+    for(int i=0; i<indices.rows; i++) {
+        std::cout << *indices[i] << " " << *dists[i]<< std::endl;
+    }
+
+    Eigen::VectorXi faces(objloader.faces.size());
+    for(auto i=0; i < objloader.faces.size(); i++)
+        faces(i) = *indices[objloader.faces[i]];
 
 //    Eigen::VectorXd nodes(12);
 //    Eigen::VectorXi elems(4);

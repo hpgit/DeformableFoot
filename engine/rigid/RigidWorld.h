@@ -21,10 +21,10 @@ public:
     int GetConstraintNum();
     
     void AddBody(Body* _body);
-    void AddJoint(BJoint* _joint);
+    void AddJoint(Joint* _joint);
     
     Body* GetBody(int body_idx) { return this->bodies[body_idx]; }
-    BJoint* GetJoint(int joint_idx) { return this->joints[joint_idx]; }
+    Joint* GetJoint(int joint_idx) { return this->joints[joint_idx]; }
     Body* GetBodyByName(const std::string &body_name) { return this->bodies[this->name_to_idx[body_name]];}
 
     void SetGravity(const Ref<const Eigen::Vector3d>& _gravity) { gravity = _gravity; }
@@ -45,7 +45,7 @@ public:
 	// class variables
 	double h;
     std::vector<Body *> bodies;
-    std::vector<BJoint *> joints;
+    std::vector<Joint *> joints;
     std::map<std::string, int> name_to_idx;
     Eigen::Vector3d gravity;
 };

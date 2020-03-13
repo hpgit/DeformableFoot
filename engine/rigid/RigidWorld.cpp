@@ -46,24 +46,34 @@ void RigidWorld::AddBody(Body *_body) {
     this->name_to_idx[_body->name] = _body->idx;
 }
 
-void RigidWorld::AddJoint(BJoint *_joint) {
+void RigidWorld::AddJoint(Joint *_joint) {
     this->joints.push_back(_joint);
     _joint->idx = this->joints.size() - 1;
 }
 
 Eigen::MatrixXd RigidWorld::GetJointJacobian(int joint_idx) {
-    BJoint *joint = this->joints[joint_idx];
-    Eigen::MatrixXd K_joint_i(3, 6*this->bodies.size());
-    K_joint_i.setZero();
-    K_joint_i.block<3, 6>(0, joint->body_p->idx * 6) = joint->body_p->GetLinearJacobian(joint->T_p.translation());
-    K_joint_i.block<3, 6>(0, joint->body_c->idx * 6) = -joint->body_c->GetLinearJacobian(joint->T_c.translation());
+    const char type = this->joints[joint_idx]->type;
+    Eigen::MatrixXd K_joint_i;
+    if (type == 'B'){
+        BJoint *joint = static_cast<BJoint*>(this->joints[joint_idx]);
+        K_joint_i.resize(3, 6*this->bodies.size());
+        K_joint_i.setZero();
+        K_joint_i.block<3, 6>(0, joint->body_p->idx * 6) = joint->body_p->GetLinearJacobian(joint->T_p.translation());
+        K_joint_i.block<3, 6>(0, joint->body_c->idx * 6) = -joint->body_c->GetLinearJacobian(joint->T_c.translation());
+    }
 
     return K_joint_i;
 }
 
 Eigen::MatrixXd RigidWorld::GetJointJacobianRemain(int joint_idx) {
-    BJoint *joint = this->joints[joint_idx];
-    return -joint->body_p->ToWorld(joint->T_p.translation()) + joint->body_c->ToWorld(joint->T_c.translation());
+    const char type = this->joints[joint_idx]->type;
+    Eigen::MatrixXd k_joint_i;
+    if (type == 'B') {
+        BJoint *joint = static_cast<BJoint*>(this->joints[joint_idx]);
+        k_joint_i = -joint->body_p->ToWorld(joint->T_p.translation()) + joint->body_c->ToWorld(joint->T_c.translation());
+    }
+
+    return k_joint_i;
 }
 
 void RigidWorld::GetSystemMatrix(Ref<Eigen::MatrixXd> Aout, Ref<Eigen::VectorXd> bout) {
@@ -146,10 +156,10 @@ void RigidWorld::Step() {
 //    std::cout << b << std::endl;
 
 
-    Eigen::VectorXd _x = A.ldlt().solve(b);
+    Eigen::VectorXd _v = A.ldlt().solve(b);
 //    std::cout << "_x:" << std::endl;
 //    std::cout << _x << std::endl;
-    this->IntegratePosition(_x.head(6*this->bodies.size()));
+    this->IntegratePosition(_v.head(6*this->bodies.size()));
 }
 
 double RigidWorld::GetKineticEnergy() {

@@ -3,28 +3,14 @@
 
 #include <Eigen/Dense>
 #include <string>
+#include "Joint.h"
 #include "Body.h"
 
-class BJoint
+class BJoint : public Joint
 {
 public:
 	// methods
 	BJoint(Body *_body_p, Eigen::Affine3d &transform_p, Body *_body_c, Eigen::Affine3d &transform_c);
-	
-	Eigen::Affine3d GetJointBeforeTransform();
-	Eigen::Affine3d GetJointAfterTransform();
-	Eigen::Affine3d GetJointTransform();
-
-public:
-	int idx;
-	int dof;
-	std::string name;
-
-	Body* body_p;
-	Body* body_c;
-
-	Eigen::Affine3d T_p;
-	Eigen::Affine3d T_c;
 
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW

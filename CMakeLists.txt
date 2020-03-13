@@ -14,20 +14,20 @@ find_package(Eigen3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 
-#find_package(flann REQUIRED)
+find_package(flann REQUIRED)
 #find_package(PkgConfig REQUIRED)
 #pkg_check_modules(flann REQUIRED IMPORTED_TARGET)
 
 include_directories(${EIGEN3_INCLUDE_DIR})
 include_directories(${OPENGL_INCLUDE_DIR})
-#include_directories(${FLANN_INCLUDE_DIRS})
+include_directories(${FLANN_INCLUDE_DIRS})
 
 add_executable(pd_example projective_dynamics_example.cpp)
 add_executable(rigid_example rigid_dynamics_example.cpp)
 add_executable(mixed_example mixed_dynamics_example.cpp)
 
-#target_link_libraries(pd_example pymesh engine render ${OPENGL_gl_LIBRARY} ${GLUT_LIBRARY} ${FLANN_LIBRARIES})
-target_link_libraries(pd_example pymesh engine render ${OPENGL_gl_LIBRARY} ${GLUT_LIBRARY})
+target_link_libraries(pd_example pymesh engine render ${OPENGL_gl_LIBRARY} ${GLUT_LIBRARY} ${FLANN_LIBRARIES})
+#target_link_libraries(pd_example pymesh engine render ${OPENGL_gl_LIBRARY} ${GLUT_LIBRARY})
 #target_link_libraries(rigid_example pymesh engine render ${OPENGL_gl_LIBRARY} ${GLUT_LIBRARY} ${FLANN_LIBRARIES})
 target_link_libraries(rigid_example pymesh engine render ${OPENGL_gl_LIBRARY} ${GLUT_LIBRARY})
 
